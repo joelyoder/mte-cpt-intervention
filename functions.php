@@ -38,10 +38,10 @@ function mte_register_cpt_intervention() {
 		"capability_type" => "post",
 		"map_meta_cap" => true,
 		"hierarchical" => false,
-		"rewrite" => [ "slug" => "intervention", "with_front" => true ],
+		"rewrite" => true,
 		"query_var" => true,
 		"menu_icon" =>  plugins_url( 'assets/intervention-icon.svg', __FILE__ ),
-		"supports" => [ "title", "editor", "thumbnail", "custom-fields", "revisions" ],
+		"supports" => [ "title", "custom-fields", "revisions" ],
 		"show_in_graphql" => false,
 	];
 
@@ -72,7 +72,6 @@ function mte_register_my_taxes() {
 		"show_in_menu" => true,
 		"show_in_nav_menus" => false,
 		"query_var" => true,
-		"rewrite" => [ 'slug' => 'domain', 'with_front' => true, ],
 		"show_admin_column" => false,
 		"show_in_rest" => true,
 		"rest_base" => "domain",
@@ -102,7 +101,6 @@ function mte_register_my_taxes() {
 		"show_in_menu" => true,
 		"show_in_nav_menus" => false,
 		"query_var" => true,
-		"rewrite" => [ 'slug' => 'method', 'with_front' => true, ],
 		"show_admin_column" => false,
 		"show_in_rest" => true,
 		"rest_base" => "method",
@@ -132,7 +130,6 @@ function mte_register_my_taxes() {
 		"show_in_menu" => true,
 		"show_in_nav_menus" => true,
 		"query_var" => true,
-		"rewrite" => [ 'slug' => 'population', 'with_front' => true, ],
 		"show_admin_column" => false,
 		"show_in_rest" => true,
 		"rest_base" => "population",
@@ -162,7 +159,6 @@ function mte_register_my_taxes() {
 		"show_in_menu" => true,
 		"show_in_nav_menus" => false,
 		"query_var" => true,
-		"rewrite" => [ 'slug' => 'equipment', 'with_front' => true, ],
 		"show_admin_column" => false,
 		"show_in_rest" => true,
 		"rest_base" => "equipment",
@@ -173,3 +169,10 @@ function mte_register_my_taxes() {
 	register_taxonomy( "equipment", [ "intervention" ], $args );
 }
 add_action( 'init', 'mte_register_my_taxes' );
+
+register_activation_hook( __FILE__, 'mte_rewrite_flush' );
+function mte_rewrite_flush() {
+    mte_register_cpt_intervention();
+ 
+    flush_rewrite_rules();
+}
